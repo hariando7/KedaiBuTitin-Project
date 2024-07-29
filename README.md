@@ -1,6 +1,6 @@
 # KedaiBuTitin-Project
 
-![KedaiBuTitin Logo](path-to-your-logo.png)
+![KedaiBuTitin Logo](/Logo.jfif)
 
 ## 📋 Deskripsi
 
