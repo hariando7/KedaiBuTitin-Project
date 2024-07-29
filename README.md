@@ -16,7 +16,7 @@ KedaiBuTitin adalah sebuah platform Point of Sale (POS) yang dirancang untuk mem
 
 ## 🚀 Teknologi
 
-- **Frontend:** Next.js, Tailwind CSS
+- **Frontend:** Laravel Blade, Tailwind CSS
 - **Backend:** Laravel, MySQL
 - **Dev Tools:** Laragon
 
@@ -24,8 +24,8 @@ KedaiBuTitin adalah sebuah platform Point of Sale (POS) yang dirancang untuk mem
 
 1. Clone repositori ini:
     ```bash
-    git clone https://github.com/username/KedaiBuTitin.git
-    cd KedaiBuTitin
+    git clone https://github.com/hariando7/KedaiBuTitin-Project.git
+    cd KedaiBuTitin-Project
     ```
 2. Instal dependensi:
     ```bash
@@ -37,8 +37,8 @@ KedaiBuTitin adalah sebuah platform Point of Sale (POS) yang dirancang untuk mem
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
     DB_PORT=3306
-    DB_DATABASE=nama_database
-    DB_USERNAME=username
+    DB_DATABASE=KedaiBuTitin-Project
+    DB_USERNAME=KedaiBuTitin-Project
     DB_PASSWORD=password
     ```
 4. Migrasi dan seeder database:
@@ -53,17 +53,7 @@ KedaiBuTitin adalah sebuah platform Point of Sale (POS) yang dirancang untuk mem
 
 ## 📚 Dokumentasi
 
-Dokumentasi lengkap untuk KedaiBuTitin tersedia di [Wiki](https://github.com/username/KedaiBuTitin/wiki).
-
-## 🤝 Kontribusi
-
-Kami sangat mengapresiasi kontribusi dari komunitas. Jika Anda ingin berkontribusi, silakan fork repositori ini dan ajukan pull request dengan perubahan Anda.
-
-1. Fork repositori ini
-2. Buat branch fitur baru (`git checkout -b fitur/AmazingFeature`)
-3. Commit perubahan Anda (`git commit -m 'Add some AmazingFeature'`)
-4. Push ke branch (`git push origin fitur/AmazingFeature`)
-5. Ajukan pull request
+Dokumentasi lengkap untuk KedaiBuTitin tersedia di [Github]([https://github.com/username/KedaiBuTitin/wiki](https://github.com/hariando7/KedaiBuTitin-Project)).
 
 ## 📬 Kontak
 
@@ -75,4 +65,5 @@ Proyek ini dilisensikan di bawah [MIT License](LICENSE).
 
 ---
 
-Tambahkan elemen visual seperti logo proyek atau gambar tampilan aplikasi untuk membuat README lebih menarik. Jangan lupa memperbarui tautan dan jalur file sesuai dengan proyek Anda yang sebenarnya.
+## ✨ TERIMAKASIH
+
