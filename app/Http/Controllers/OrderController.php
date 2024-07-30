@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OrdersExport;
 use App\Models\Order;
 use App\Models\Menu;
 use App\Models\Stock;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -29,7 +31,6 @@ class OrderController extends Controller
             });
         }
         
-        // Urutkan berdasarkan tanggal pembuatan terbaru terlebih dahulu
         $query->orderBy('created_at', 'desc');
     
         // Pagination
@@ -66,9 +67,9 @@ class OrderController extends Controller
             // Update stock
             $stock->decrement('jumlah_stok', $request->jumlah_pesanan);
 
-            return redirect()->route('orders.index')->with('success', 'Order created successfully.');
+            return redirect()->route('orders.index')->with('success', 'Pesanan Berhasil Ditambahkan');
         } else {
-            return redirect()->back()->with('error', 'Insufficient stock.');
+            return redirect()->back()->with('error', 'Stok Habis!!!');
         }
     }
 
@@ -80,10 +81,9 @@ class OrderController extends Controller
         }
 
         $order->delete();
-        return redirect()->route('orders.index')->with('success', 'Order deleted successfully.');
+        return redirect()->route('orders.index')->with('success', 'Pesanan Berhasil Dihapus');
     }
 
-    // app/Http/Controllers/OrderController.php
     public function report(Request $request)
     {
         $query = Order::with('menu');
@@ -95,7 +95,7 @@ class OrderController extends Controller
             $endDate = $endDate . ' 23:59:59';
             $query->whereBetween('created_at', [$startDate, $endDate]);
         }
-
+    
         // Pencarian berdasarkan nama menu
         if ($request->has('search') && $request->input('search') !== '') {
             $search = $request->input('search');
@@ -104,13 +104,27 @@ class OrderController extends Controller
             });
         }
         
-        // Urutkan berdasarkan tanggal pembuatan terbaru terlebih dahulu
         $query->orderBy('created_at', 'desc');
         
-        // Pagination
+        $orders = $query->get(); // ambil semua hasil tanpa pagination
+    
+        $totalQuantity = $orders->sum('jumlah_pesanan');
+        $totalRevenue = $orders->sum(function($order) {
+            return $order->jumlah_pesanan * $order->menu->harga_menu;
+        });
+    
+        // Terapkan pagination pada hasil yang telah dihitung
         $orders = $query->paginate(10); 
-        
-        return view('orders.report', compact('orders'));
+    
+        return view('orders.report', compact('orders', 'totalQuantity', 'totalRevenue'));
+    }
+    
+    
+    
+
+    public function export(Request $request)
+    {
+        return Excel::download(new OrdersExport($request->input('start_date'), $request->input('end_date'), $request->input('search')), 'orders.xlsx');
     }
 
 }

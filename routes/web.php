@@ -38,3 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/report', [OrderController::class, 'report'])->name('orders.report');
     Route::post('/stocks/reset', [StockController::class, 'reset'])->name('stocks.reset');
 });
+
+// routes/web.php
+Route::get('/orders/export', [OrderController::class, 'export'])->name('orders.export');
+

@@ -40,13 +40,12 @@ class StockController extends Controller
         $existingStock = Stock::where('menu_id', $request->input('menu_id'))->first();
     
         if ($existingStock) {
-            // Jika stok sudah ada, kembalikan dengan pesan error
-            return redirect()->back()->with('error', 'Stock for this menu already exists.');
+            return redirect()->back()->with('error', 'Stock Sudah Tersedia, Tidak Bisa Menambahkan Data Yang Sama');
         }
     
         // Jika stok belum ada, buat stok baru
         Stock::create($request->only(['menu_id', 'jumlah_stok']));
-        return redirect()->route('stocks.index')->with('success', 'Stock created successfully.');
+        return redirect()->route('stocks.index')->with('success', 'Stock Berhasil Dibuat');
     }
 
     public function edit(Stock $stock)
@@ -63,13 +62,13 @@ class StockController extends Controller
         ]);
 
         $stock->update($request->only(['menu_id', 'jumlah_stok']));
-        return redirect()->route('stocks.index')->with('success', 'Stock updated successfully.');
+        return redirect()->route('stocks.index')->with('success', 'Stock Berhasil Di Update');
     }
 
     public function destroy(Stock $stock)
     {
         $stock->delete();
-        return redirect()->route('stocks.index')->with('success', 'Stock deleted successfully.');
+        return redirect()->route('stocks.index')->with('success', 'Stock Berhasil Di Hapus');
     }
 
     public function reset()

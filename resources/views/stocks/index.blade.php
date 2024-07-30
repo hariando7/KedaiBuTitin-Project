@@ -65,7 +65,7 @@
             <tbody>
                 @foreach($stocks as $stock)
                 <tr>
-                    <td class="border px-4 py-2">{{ $stock->id }}</td>
+                    <td class="text-black font-bold border px-4 py-2">{{ $stock->id }}</td>
                     <td class="border px-4 py-2">{{ $stock->menu->nama_menu }}</td>
                     <td class="border px-4 py-2">
                         100
@@ -100,7 +100,7 @@
                             </form>
                         </span>
                     </td>
-                    <td class="border px-4 py-2">{{ $stock->id }}</td>
+                    <td class="text-black font-bold border px-4 py-2">{{ $stock->id }}</td>
                 </tr>
                 @endforeach
             </tbody>
