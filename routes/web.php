@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GeneralPageController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\StockController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,14 +23,18 @@ use Illuminate\Support\Facades\Route;
 //     return view('dashboard/welcome');
 // });
 
-Route::get('/about', function () {
-    return view('about');
-});
+Auth::routes();
 
-Route::controller(GeneralPageController::class) -> group(function () {
-    // Awal Dashboard
-    Route::get('/', 'dashboard');
-    Route::get('/karya-slb', 'karyaslb');
-    Route::get('/tentang-bidang-pembinaan-pendidikan-khusus', 'tentang');
-    // Akhir Dashboard
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::middleware('auth')->group(function () {
+    Route::resource('menus', MenuController::class);
+    Route::resource('stocks', StockController::class);
+    Route::resource('orders', OrderController::class)->except(['show', 'edit', 'update']);
+    Route::get('/orders/report', [OrderController::class, 'report'])->name('orders.report');
+    Route::post('/stocks/reset', [StockController::class, 'reset'])->name('stocks.reset');
 });
