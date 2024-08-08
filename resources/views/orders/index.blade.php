@@ -14,12 +14,10 @@
         {{ session('error') }}
     </div>
     @endif
-
-    <h1 class=" text-4xl mb-5 text-black dark:text-orange-900">Pesanan Kedai Ibu Titin</h1>
     <nav aria-label="Breadcrumb" class="flex">
         <ol class="flex overflow-hidden rounded-lg border border-gray-200 text-gray-600">
             <li class="flex items-center">
-                <a href="{{ route('orders.index') }}"
+                <div
                     class="flex h-10 items-center gap-1.5 bg-gray-100 px-4 transition hover:text-gray-900 {{ Request::routeIs(['orders.index']) ? 'bg-gray-100 dark:bg-orange-700 text-gray-600 dark:text-white dark:hover:text-white ' : '' }} text-gray-600 px-4 transition hover:text-gray-900">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -27,57 +25,97 @@
                             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                     <span class="ms-1.5 text-xs font-medium">Daftar Pesanan</span>
-                </a>
+                </div>
             </li>
             <li class="relative flex items-center">
                 <span
                     class="absolute inset-y-0 -start-px h-10 w-4 bg-gray-100 [clip-path:_polygon(0_0,_0%_100%,_100%_50%)] rtl:rotate-180">
                 </span>
-                <a href="{{ route('orders.create') }}"
+                <div
                     class="flex h-10 items-center bg-white pe-4 ps-8 text-xs font-medium transition hover:text-gray-900">
                     Tambah Pesanan
-                </a>
+                </div>
             </li>
         </ol>
     </nav>
-    <form method="GET" action="{{ route('orders.index') }}" class="mt-10">
-        <div class="flex gap-4">
-            <input type="date" name="start_date" value="{{ request('start_date') }}" class="border px-3 py-2 rounded"
-                placeholder="Tanggal Awal" required>
-            <input type="date" name="end_date" value="{{ request('end_date') }}" class="border px-3 py-2 rounded"
-                placeholder="Tanggal Akhir" required>
-            <input type="text" name="search" value="{{ request('search') }}" class="border px-3 py-2 rounded"
-                placeholder="Cari Nama Menu">
-            <button type="submit" class="bg-gray-700 dark:bg-orange-700 text-white px-4 py-2 rounded">Filter</button>
+    <div class="flex justify-between mb-5 mt-5">
+        <h1 class=" text-4xl text-black dark:text-orange-900">Pesanan Kedai Ibu Titin</h1>
+        <a href="{{ route('orders.create') }}"
+            class="btn border-none dark:bg-orange-700 text-black dark:text-white">Tambah
+            Pesanan</a>
+    </div>
+    <form method="GET" action="{{ url()->current() }}" id="filter-form" class="mt-5 w-full">
+        <div class="flex justify-between">
+            <div class="flex w-full gap-2">
+                <input type="date" id="start_date" name="start_date" value="{{ request('start_date') }}"
+                    class="border px-3 py-2 rounded" placeholder="Tanggal Awal">
+                <input type="date" id="end_date" name="end_date" value="{{ request('end_date') }}"
+                    class="border px-3 py-2 rounded" placeholder="Tanggal Akhir">
+                <button type="button" id="today-button"
+                    class="bg-gray-700 dark:bg-orange-700 text-white px-4 py-2 rounded">Tanggal Hari Ini</button>
+                <button type="button" id="all-time-button"
+                    class="bg-gray-700 dark:bg-orange-700 text-white px-4 py-2 rounded">Restart Filter</button>
+            </div>
+            <div class="flex justify-between gap-2 mt-2">
+                <input type="text" name="search" id="search-input" value="{{ request('search') }}"
+                    class="border px-3 py-2 rounded" placeholder="Cari Nama Menu">
+                <button type="submit"
+                    class="bg-gray-700 dark:bg-orange-700 text-white px-4 py-2 rounded">Filter/Cari</button>
+            </div>
         </div>
+        <script>
+            document.getElementById('today-button').addEventListener('click', function(event) {
+                var today = new Date().toISOString().split('T')[0];
+                document.getElementById('start_date').value = today;
+                document.getElementById('end_date').value = today;
+                document.getElementById('filter-form').submit();
+            });
+            document.getElementById('all-time-button').addEventListener('click', function() {
+                var url = new URL(window.location.href);
+                url.searchParams.delete('start_date');
+                url.searchParams.delete('end_date');
+                url.searchParams.delete('search'); 
+                window.location.href = url.toString();
+            });
+            document.getElementById('search-input').addEventListener('input', function() {
+                var searchInput = document.getElementById('search-input').value;
+                if (searchInput === '') {
+                    var url = new URL(window.location.href);
+                    url.searchParams.delete('search');
+                    window.location.href = url.toString();
+                }
+            });
+        </script>
     </form>
     <div class="overflow-x-auto mt-5">
         <table class="table table-xs table-pin-rows table-pin-cols border">
             <thead>
                 <tr class="text-black dark:text-white">
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">ID</th>
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400 bg-white dark:bg-orange-400">Nama Menu</th>
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400 bg-white dark:bg-orange-400">Jumlah Pesanan
+                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">No</th>
+                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">Nama Menu</th>
+                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">Jumlah Pesanan
                     </th>
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400 bg-white dark:bg-orange-400">Harga Satuan
+                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">Harga Satuan
                     </th>
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400 bg-white dark:bg-orange-400">Total Harga
+                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">Total Harga
                     </th>
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400 bg-white dark:bg-orange-400">Tanggal Pesanan
+                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">Tanggal Pesanan
                     </th>
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400 bg-white dark:bg-orange-400">Catatan</th>
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400 bg-white dark:bg-orange-400">Aksi</th>
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">ID</th>
+                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">Catatan</th>
+                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">Aksi</th>
+                    <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400" style="display:none;">
+                        ID</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($orders as $order)
+                @foreach ($orders as $index => $order)
                 <tr>
-                    <th class="border px-4 py-2">{{ $order->id }}</th>
+                    <th class="border px-4 py-2">{{ $index + 1 }}</th>
                     <td class="border px-4 py-2">{{ $order->menu->nama_menu }}</td>
                     <td class="border px-4 py-2">{{ $order->jumlah_pesanan }}</td>
-                    <td class="border px-4 py-2">Rp. {{ number_format($order->menu->harga_menu, 0, ',', '.') }}</td>
-                    <td class="border px-4 py-2">Rp. {{ number_format($order->total_harga, 0, ',', '.') }}</td>
+                    <td class="border px-4 py-2">Rp. {{ number_format($order->harga_pesanan, 0, ',', '.') }}</td>
+                    <td class="border px-4 py-2">Rp. {{ number_format($order->jumlah_pesanan * $order->harga_pesanan, 0,
+                        ',', '.') }}</td>
                     <td class="border px-4 py-2">{{ $order->created_at }}</td>
                     <td class="border px-4 py-2">{{ $order->catatan_pesanan }}</td>
                     <td class="border px-4 py-2">
@@ -95,25 +133,26 @@
                             </button>
                         </form>
                     </td>
-                    <th class="border px-4 py-2">{{ $order->id }}</th>
+                    <th class="border px-4 py-2" style="display:none;">{{ $order->id }}</th>
                 </tr>
                 @endforeach
             </tbody>
             <tfoot>
                 <tr class="text-black dark:text-white">
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">ID</th>
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400 bg-white dark:bg-orange-400">Nama Menu</th>
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400 bg-white dark:bg-orange-400">Jumlah Pesanan
+                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">No</th>
+                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">Nama Menu</th>
+                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">Jumlah Pesanan
                     </th>
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400 bg-white dark:bg-orange-400">Harga Satuan
+                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">Harga Satuan
                     </th>
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400 bg-white dark:bg-orange-400">Total Harga
+                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">Total Harga
                     </th>
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400 bg-white dark:bg-orange-400">Tanggal Pesanan
+                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">Tanggal Pesanan
                     </th>
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400 bg-white dark:bg-orange-400">Catatan</th>
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400 bg-white dark:bg-orange-400">Aksi</th>
-                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">ID</th>
+                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">Catatan</th>
+                    <th class="border px-4 py-2 bg-white dark:bg-orange-400">Aksi</th>
+                    <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400" style="display:none;">
+                        ID</th>
                 </tr>
             </tfoot>
         </table>

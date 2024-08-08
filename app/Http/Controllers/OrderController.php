@@ -30,14 +30,22 @@ class OrderController extends Controller
                 $q->where('nama_menu', 'like', "%{$search}%");
             });
         }
+    
+        // Filter berdasarkan menu_id
+        if ($request->has('menu_id') && $request->input('menu_id') !== '') {
+            $menuId = $request->input('menu_id');
+            $query->where('menu_id', $menuId);
+        }
         
         $query->orderBy('created_at', 'desc');
     
         // Pagination
         $orders = $query->paginate(10); 
+        
+        $menus = Menu::all(); 
     
-        return view('orders.index', compact('orders'));
-    }
+        return view('orders.index', compact('orders', 'menus'));
+    }    
 
     public function create()
     {
@@ -50,6 +58,7 @@ class OrderController extends Controller
         $request->validate([
             'menu_id' => 'required|exists:menus,id',
             'jumlah_pesanan' => 'required|integer|min:1',
+            'harga_pesanan' => 'required|integer|min:1',
             'catatan_pesanan' => 'required|string|max:255',
         ]);
 
@@ -61,6 +70,7 @@ class OrderController extends Controller
             Order::create([
                 'menu_id' => $request->menu_id,
                 'jumlah_pesanan' => $request->jumlah_pesanan,
+                'harga_pesanan' => $request->harga_pesanan,
                 'catatan_pesanan' => $request->catatan_pesanan,
             ]);
 
@@ -106,22 +116,23 @@ class OrderController extends Controller
         
         $query->orderBy('created_at', 'desc');
         
-        $orders = $query->get(); // ambil semua hasil tanpa pagination
-    
+        // Ambil semua hasil tanpa pagination untuk perhitungan
+        $orders = $query->get();
+        
+        // Hitung total jumlah pesanan
         $totalQuantity = $orders->sum('jumlah_pesanan');
-        $totalRevenue = $orders->sum(function($order) {
-            return $order->jumlah_pesanan * $order->menu->harga_menu;
-        });
     
-        // Terapkan pagination pada hasil yang telah dihitung
-        $orders = $query->paginate(10); 
+        // Hitung total pendapatan
+        $totalRevenue = $orders->sum(function($order) {
+            return $order->jumlah_pesanan * $order->harga_pesanan;
+        });
+        
+        $orders = $query->paginate(10);
     
         return view('orders.report', compact('orders', 'totalQuantity', 'totalRevenue'));
     }
     
     
-    
-
     public function export(Request $request)
     {
         return Excel::download(new OrdersExport($request->input('start_date'), $request->input('end_date'), $request->input('search')), 'orders.xlsx');

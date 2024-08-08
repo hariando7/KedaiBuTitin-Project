@@ -16,7 +16,6 @@ return new class extends Migration
             $table->id();
             $table->string('nama_menu');
             $table->string('jenis_menu'); 
-            $table->integer('harga_menu')->nullable();
             $table->string('catatan_menu'); 
             $table->timestamps();
         });

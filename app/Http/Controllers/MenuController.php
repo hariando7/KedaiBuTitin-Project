@@ -9,10 +9,10 @@ class MenuController extends Controller
 {
     public function index()
     {
-        $menus = Menu::all();
+        $menus = Menu::orderBy('nama_menu', 'asc')->get();
         return view('menus.index', compact('menus'));
     }
-
+    
     public function create()
     {
         return view('menus.create');
@@ -23,12 +23,17 @@ class MenuController extends Controller
         $request->validate([
             'nama_menu' => 'required|string|max:255',
             'jenis_menu' => 'required|string|max:255',
-            'harga_menu' => 'required|integer|min:1',
             'catatan_menu' => 'required|string|max:255',
         ]);
 
-        Menu::create($request->only(['nama_menu', 'jenis_menu', 'harga_menu', 'catatan_menu']));
-        return redirect()->route('menus.index')->with('success', 'Menu created successfully.');
+        $existingMenu = Menu::where('nama_menu', $request->nama_menu)->first();
+
+        if ($existingMenu) {
+            return redirect()->back()->with('error', 'Menu Sudah Ditambahkan');
+        }
+
+        Menu::create($request->only(['nama_menu', 'jenis_menu', 'catatan_menu']));
+        return redirect()->route('menus.index')->with('success', 'Menu Berhasil Ditambhkan');
     }
 
     public function edit(Menu $menu)
@@ -41,17 +46,16 @@ class MenuController extends Controller
         $request->validate([
             'nama_menu' => 'required|string|max:255',
             'jenis_menu' => 'required|string|max:255',
-            'harga_menu' => 'required|integer|min:1',
             'catatan_menu' => 'required|string|max:255',
         ]);
 
-        $menu->update($request->only(['nama_menu', 'jenis_menu', 'harga_menu', 'catatan_menu']));
-        return redirect()->route('menus.index')->with('success', 'Menu updated successfully.');
+        $menu->update($request->only(['nama_menu', 'jenis_menu', 'catatan_menu']));
+        return redirect()->route('menus.index')->with('success', 'Menu Berhasil Di Update');
     }
 
     public function destroy(Menu $menu)
     {
         $menu->delete();
-        return redirect()->route('menus.index')->with('success', 'Menu deleted successfully.');
+        return redirect()->route('menus.index')->with('success', 'Menu Berhasil Di Hapus');
     }
 }

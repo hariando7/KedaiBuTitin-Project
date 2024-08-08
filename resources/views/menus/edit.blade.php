@@ -3,7 +3,6 @@
 
 @section('content')
 <div class="bg-white=">
-    <h1 class="text-4xl mb-5 text-black dark:text-orange-900">Edit Menu</h1>
     <nav aria-label="Breadcrumb" class="flex">
         <ol class="mb-5 flex overflow-hidden rounded-lg border border-gray-200 text-gray-600">
             <li class="flex items-center">
@@ -36,96 +35,84 @@
             </li>
         </ol>
     </nav>
+    <h1 class="text-4xl mb-5 text-black dark:text-orange-900">Edit Menu</h1>
     <form action="{{ route('menus.update', $menu->id) }}" method="POST">
         @csrf
         @method('PUT')
-        <div class="mb-4">
-            <label for="UserEmail"
-                class="relative block overflow-hidden rounded-md border border-gray-200 px-3 pt-3 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
-                <input type="text" id="UserEmail" placeholder="Masukkan Nama Menu" name="nama_menu"
-                    class="peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
-                    required value="{{ $menu->nama_menu }}" />
-                <span
-                    class="absolute start-3 top-3 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-3 peer-focus:text-xs">
-                    Masukkan Nama Menu
-                </span>
-            </label>
-        </div>
-        <div class="mb-4">
+        <div class="mb-4 mt-10">
             <div>
-                <label for="HeadlineAct" class="block text-sm font-medium text-gray-900"> Jenis Menu </label>
+                <label for="nama_menu" class="block text-sm font-medium text-gray-900">Nama Menu</label>
                 <div class="relative mt-1.5">
-                    <input type="text" list="HeadlineActArtist" id="HeadlineAct" name="jenis_menu"
-                        class="w-full rounded-lg border-gray-300 pe-10 text-gray-700 sm:text-sm [&::-webkit-calendar-picker-indicator]:opacity-0"
-                        placeholder="Please select" required />
-                    <span class="absolute inset-y-0 end-0 flex w-8 items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="size-5 text-gray-500">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                        </svg>
-                    </span>
+                    <select id="nama_menu" name="nama_menu"
+                        class="w-full rounded-lg border-gray-300 pe-10 text-gray-700 sm:text-sm p-2 h-10" required>
+                        <option value="" disabled>Pilih Nama Menu</option>
+                        <option value="Ayam Bakar Tanpa Nasi" data-jenis="Makanan" {{ $menu->
+                            nama_menu == 'Ayam Bakar Tanpa Nasi' ? 'selected' : '' }}>Ayam Bakar Tanpa Nasi</option>
+                        <option value="Ayam Bakar Nasi" data-jenis="Makanan" {{ $menu->nama_menu ==
+                            'Ayam Bakar Nasi' ? 'selected' : '' }}>Ayam Bakar Nasi</option>
+                        <option value="Ayam Penyet Tanpa Nasi" data-jenis="Makanan" {{ $menu->
+                            nama_menu == 'Ayam Penyet Tanpa Nasi' ? 'selected' : '' }}>Ayam Penyet Tanpa Nasi</option>
+                        <option value="Ayam Penyet Nasi" data-jenis="Makanan" {{ $menu->nama_menu ==
+                            'Ayam Penyet Nasi' ? 'selected' : '' }}>Ayam Penyet Nasi</option>
+                        <option value="Ayam Geprek Komplit" data-jenis="Makanan" {{ $menu->nama_menu
+                            == 'Ayam Geprek Komplit' ? 'selected' : '' }}>Ayam Geprek Komplit</option>
+                        <option value="Ayam Geprek Hemat" data-jenis="Makanan" {{ $menu->nama_menu ==
+                            'Ayam Geprek Hemat' ? 'selected' : '' }}>Ayam Geprek Hemat</option>
+                        <option value="Ricebowl" data-jenis="Makanan" {{ $menu->nama_menu ==
+                            'Ricebowl' ? 'selected' : '' }}>Ricebowl</option>
+                        <option value="Kue" data-jenis="Kue" {{ $menu->nama_menu == 'Kue' ? 'selected'
+                            : '' }}>Kue</option>
+                    </select>
                 </div>
-                <datalist name="jenis_menu" id="HeadlineActArtist">
-                    <option value=" Makanan" {{ $menu->jenis_menu == 'Makanan' ? 'selected' : '' }}>Makanan</option>
-                    <option value="Minuman" {{ $menu->jenis_menu == 'Minuman' ? 'selected' : '' }}>Minuman</option>
-                </datalist>
             </div>
         </div>
         <div class="mb-4">
             <div>
-                <label for="harga_menu" class="block text-sm font-medium text-gray-900">Harga Menu</label>
+                <label for="jenis_menu" class="block text-sm font-medium text-gray-900">Jenis Menu</label>
                 <div class="relative mt-1.5">
-                    <input type="number" list="harga_list" id="harga_menu" name="harga_menu"
-                        class="w-full rounded-lg border-gray-300 pe-10 text-gray-700 sm:text-sm [&::-webkit-calendar-picker-indicator]:opacity-0"
-                        placeholder="Masukkan Harga Menu" required />
-                    <span class="absolute inset-y-0 end-0 flex w-8 items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="size-5 text-gray-500">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                        </svg>
-                    </span>
+                    <select id="jenis_menu" name="jenis_menu"
+                        class="w-full rounded-lg border-gray-300 pe-10 text-gray-700 sm:text-sm p-2 h-10" required>
+                        <option value="" disabled>Pilih Jenis Menu</option>
+                        <option value="Makanan" {{ $menu->jenis_menu == 'Makanan' ? 'selected' : '' }}>Makanan</option>
+                        <option value="Minuman" {{ $menu->jenis_menu == 'Minuman' ? 'selected' : '' }}>Minuman</option>
+                        <option value="Kue" {{ $menu->jenis_menu == 'Kue' ? 'selected' : '' }}>Kue</option>
+                    </select>
                 </div>
-                <datalist id="harga_list">
-                    <option value="1000" {{ $menu->harga_menu == '1000' ? 'selected' : '' }}>1000</option>
-                    <option value="2000" {{ $menu->harga_menu == '2000' ? 'selected' : '' }}>2000</option>
-                    <option value="3000" {{ $menu->harga_menu == '3000' ? 'selected' : '' }}>3000</option>
-                    <option value="4000" {{ $menu->harga_menu == '4000' ? 'selected' : '' }}>4000</option>
-                    <option value="5000" {{ $menu->harga_menu == '5000' ? 'selected' : '' }}>5000</option>
-                    <option value="6000" {{ $menu->harga_menu == '6000' ? 'selected' : '' }}>6000</option>
-                    <option value="7000" {{ $menu->harga_menu == '7000' ? 'selected' : '' }}>7000</option>
-                    <option value="8000" {{ $menu->harga_menu == '8000' ? 'selected' : '' }}>8000</option>
-                    <option value="9000" {{ $menu->harga_menu == '9000' ? 'selected' : '' }}>9000</option>
-                    <option value="10000" {{ $menu->harga_menu == '10000' ? 'selected' : '' }}>10000</option>
-                    <option value="11000" {{ $menu->harga_menu == '11000' ? 'selected' : '' }}>11000</option>
-                    <option value="12000" {{ $menu->harga_menu == '12000' ? 'selected' : '' }}>12000</option>
-                    <option value="13000" {{ $menu->harga_menu == '13000' ? 'selected' : '' }}>13000</option>
-                    <option value="14000" {{ $menu->harga_menu == '14000' ? 'selected' : '' }}>14000</option>
-                    <option value="15000" {{ $menu->harga_menu == '15000' ? 'selected' : '' }}>15000</option>
-                </datalist>
             </div>
         </div>
         <div class="mb-4">
             <label for="catatan_menu"
                 class="relative block overflow-hidden rounded-md border border-gray-200 px-3 pt-3 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
                 <input type="text" id="catatan_menu" placeholder="Masukkan Catatan Menu" name="catatan_menu"
-                    class="peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
-                    required value="{{ $menu->catatan_menu }}" />
+                    value="{{ $menu->catatan_menu }}"
+                    class="peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm" />
                 <span
                     class="absolute start-3 top-3 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-3 peer-focus:text-xs">
                     Masukkan Catatan (Opsional)
                 </span>
             </label>
         </div>
-        <button type="submit"
-            class="group relative inline-block text-sm font-medium text-white focus:outline-none focus:ring" href="#">
-            <span class="absolute inset-0 border border-orange-600 group-active:border-orange-500"></span>
-            <span
-                class="block border border-orange-600 bg-orange-600 px-12 py-3 transition-transform active:border-orange-500 active:bg-orange-500 group-hover:-translate-x-1 group-hover:-translate-y-1">
-                Edit
-            </span>
-        </button>
+        <div class="flex justify-between mt-10">
+            <a href="{{ route('menus.index') }}"
+                class="group relative inline-block text-sm font-medium text-white focus:outline-none focus:ring"
+                href="#">
+                <span class="absolute inset-0 border border-orange-600 group-active:border-orange-500"></span>
+                <span
+                    class="block border border-orange-600 bg-orange-600 px-12 py-3 transition-transform active:border-orange-500 active:bg-orange-500 group-hover:-translate-x-1 group-hover:-translate-y-1">
+                    Kembali
+                </span>
+            </a>
+            <button type="submit"
+                class="group relative inline-block text-sm font-medium text-white focus:outline-none focus:ring"
+                href="#">
+                <span class="absolute inset-0 border border-orange-600 group-active:border-orange-500"></span>
+                <span
+                    class="block border border-orange-600 bg-orange-600 px-12 py-3 transition-transform active:border-orange-500 active:bg-orange-500 group-hover:-translate-x-1 group-hover:-translate-y-1">
+                    Edit
+                </span>
+            </button>
+        </div>
     </form>
+
 </div>
 @endsection

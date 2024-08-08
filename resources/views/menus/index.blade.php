@@ -3,53 +3,65 @@
 
 @section('content')
 <div class="">
-    <h1 class="text-4xl mb-5 text-black dark:text-orange-900">Menu Kedai Ibu Titin</h1>
     <nav aria-label="Breadcrumb" class="flex">
-        <ol class="flex overflow-hidden rounded-lg border border-gray-200 text-gray-600">
+        <ol class="mb-5 flex overflow-hidden rounded-lg border border-gray-200 text-gray-600">
             <li class="flex items-center">
-                <a href="{{ route('menus.index') }}"
-                    class="flex h-10 items-center gap-1.5 {{ Request::routeIs(['menus.index']) ? 'bg-gray-100 dark:bg-orange-700 text-gray-600 dark:text-white dark:hover:text-white ' : '' }} text-gray-600 px-4 transition hover:text-gray-900">
+                <div
+                    class="flex h-10 items-center gap-1.5 bg-gray-100 px-4 transition hover:text-gray-900 {{ Request::routeIs(['menus.index']) ? 'bg-gray-100 dark:bg-orange-700 text-gray-600 dark:text-white dark:hover:text-white ' : '' }} text-gray-600 px-4 transition hover:text-gray-90">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                     <span class="ms-1.5 text-xs font-medium">Menu</span>
-                </a>
+                </div>
             </li>
             <li class="relative flex items-center">
                 <span
-                    class="absolute inset-y-0 -start-px h-10 w-4 [clip-path:_polygon(0_0,_0%_100%,_100%_50%)] rtl:rotate-180">
+                    class="absolute inset-y-0 -start-px h-10 w-4 bg-gray-100 [clip-path:_polygon(0_0,_0%_100%,_100%_50%)] rtl:rotate-180">
                 </span>
-                <a href="{{ route('menus.create') }}"
-                    class="flex h-10 items-center bg-white pe-4 ps-8 text-xs font-medium transition hover:text-gray-900">
+                <div
+                    class="flex h-10 items-center bg-white pe-4 ps-8 text-xs font-medium transition hover:text-gray-900 0">
                     Tambah Menu
-                </a>
+                </div>
             </li>
         </ol>
     </nav>
-    <div class="overflow-x-auto mt-10">
+    <div class="flex justify-between">
+        <h1 class="text-4xl text-black dark:text-orange-900">Menu Kedai Ibu Titin</h1>
+        <a href="{{ route('menus.create') }}"
+            class="btn border-none dark:bg-orange-700 text-black dark:text-white">Tambah
+            Menu</a>
+    </div>
+    @if(session('success'))
+    <div class="alert alert-danger">
+        {{ session('success') }}
+    </div>
+    @endif
+    <div class="overflow-x-auto mt-5">
         <table class="table table-xs table-pin-rows table-pin-cols border">
             <thead>
                 <tr>
-                    <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">ID</th>
+                    <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">No</th>
                     <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">Nama Menu</th>
                     <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">Jenis Menu</th>
-                    <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">Harga Menu</th>
+                    {{-- <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">Harga Menu</th>
+                    --}}
                     <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">Catatan Menu</th>
                     <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">Tanggal Ditambahkan
                     </th>
                     <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">Aksi</th>
-                    <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">ID</th>
+                    <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400" style="display:none;">
+                        ID</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($menus as $menu)
+                @foreach($menus as $index => $menu)
                 <tr>
-                    <th class="border px-4 py-2">{{ $menu->id }}</th>
+                    <th class="border px-4 py-2">{{ $index + 1 }}</th>
                     <td class="border px-4 py-2">{{ $menu->nama_menu }}</td>
                     <td class="border px-4 py-2">{{ $menu->jenis_menu }}</td>
-                    <td class="border px-4 py-2">Rp. {{ number_format($menu->harga_menu, 0, ',', '.') }}</td>
+                    {{-- <td class="border px-4 py-2">Rp. {{ number_format($menu->harga_menu, 0, ',', '.') }}</td> --}}
                     <td class="border px-4 py-2">{{ $menu->catatan_menu }}</td>
                     <td class="border px-4 py-2">{{ $menu->created_at }}</td>
                     <td class="border px-4 py-2">
@@ -77,21 +89,23 @@
                             </form>
                         </span>
                     </td>
-                    <th class="border px-4 py-2">{{ $menu->id }}</th>
+                    <th class="border px-4 py-2" style="display:none;">{{ $menu->id }}</th>
                 </tr>
                 @endforeach
             </tbody>
             <tfoot>
                 <tr>
-                    <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">ID</th>
+                    <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">No</th>
                     <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">Nama Menu</th>
                     <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">Jenis Menu</th>
-                    <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">Harga Menu</th>
+                    {{-- <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">Harga Menu</th>
+                    --}}
                     <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">Catatan Menu</th>
                     <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">Tanggal Ditambahkan
                     </th>
                     <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">Aksi</th>
-                    <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400">ID</th>
+                    <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400" style="display:none;">
+                        ID</th>
                 </tr>
             </tfoot>
         </table>

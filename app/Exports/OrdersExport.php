@@ -41,18 +41,18 @@ class OrdersExport implements FromCollection, WithHeadings, WithStyles, WithColu
 
         $totalQuantity = $orders->sum('jumlah_pesanan');
         $totalRevenue = $orders->sum(function($order) {
-            return $order->jumlah_pesanan * $order->menu->harga_menu;
+            return $order->jumlah_pesanan * $order->harga_pesanan; // Gunakan harga_pesanan
         });
 
         $data = $orders->map(function($order) {
-            $totalHarga = $order->jumlah_pesanan * $order->menu->harga_menu; // Hitung total harga
+            $totalHarga = $order->jumlah_pesanan * $order->harga_pesanan; // Hitung total harga
 
             return [
                 $order->id,
                 $order->menu->nama_menu,
                 $order->jumlah_pesanan,
-                number_format($order->menu->harga_menu, 0, '.', ','), // Format harga satuan
-                number_format($totalHarga, 0, '.', ','), // Format total harga
+                $order->harga_pesanan, // Gunakan harga_pesanan
+                $totalHarga, // Total harga
                 $order->created_at->format('d-m-Y H:i:s'),
                 $order->catatan_pesanan,
             ];
@@ -64,7 +64,7 @@ class OrdersExport implements FromCollection, WithHeadings, WithStyles, WithColu
             '',
             $totalQuantity,
             '',
-            number_format($totalRevenue, 0, '.', ','), // Format total revenue
+            $totalRevenue, // Total revenue
             '',
             ''
         ];
@@ -135,4 +135,3 @@ class OrdersExport implements FromCollection, WithHeadings, WithStyles, WithColu
         ];
     }
 }
-

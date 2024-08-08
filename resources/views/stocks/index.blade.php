@@ -3,11 +3,10 @@
 
 @section('content')
 <div class="bg-white">
-    <h1 class=" text-4xl mb-5 text-black dark:text-orange-900">Stok Kedai Ibu Titin</h1>
     <nav aria-label="Breadcrumb" class="flex">
         <ol class="flex overflow-hidden rounded-lg border border-gray-200 text-gray-600">
             <li class="flex items-center">
-                <a href="{{ route('stocks.index') }}"
+                <div
                     class="flex h-10 items-center gap-1.5 bg-gray-100 px-4 transition hover:text-gray-900 {{ Request::routeIs(['stocks.index']) ? 'bg-gray-100 dark:bg-orange-700 text-gray-600 dark:text-white dark:hover:text-white ' : '' }} text-gray-600 px-4 transition hover:text-gray-900">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -15,16 +14,16 @@
                             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                     <span class="ms-1.5 text-xs font-medium">Stok</span>
-                </a>
+                </div>
             </li>
             <li class="relative flex items-center">
                 <span
                     class="absolute inset-y-0 -start-px h-10 w-4 bg-gray-100 [clip-path:_polygon(0_0,_0%_100%,_100%_50%)] rtl:rotate-180">
                 </span>
-                <a href="{{ route('stocks.create') }}"
+                <div
                     class="flex h-10 items-center bg-white pe-4 ps-8 text-xs font-medium transition hover:text-gray-900">
                     Tambah Stok
-                </a>
+                </div>
             </li>
             <li class=" relative flex items-center">
                 <span
@@ -39,42 +38,42 @@
             </li>
         </ol>
     </nav>
-    <div class="overflow-x-auto mt-10">
+    <div class="flex justify-between mt-5">
+        <h1 class="text-4xl text-black dark:text-orange-900">Stok Kedai Ibu Titin</h1>
+        <a href="{{ route('stocks.create') }}"
+            class="btn border-none dark:bg-orange-700 text-black dark:text-white">Tambah
+            Stok</a>
+    </div>
+    <div class="overflow-x-auto mt-5">
         <table class="table table-xs table-pin-rows table-pin-cols border">
             <thead>
                 <tr>
-                    <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">ID
+                    <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">No
                     </th>
                     <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">Nama
                         Menu</th>
                     <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">Stok
-                        Awal</th>
-                    <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">Stok
                         Tersedia</th>
                     <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">Stok
                         Terjual</th>
-                    {{-- <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">
-                        Created At</th>
-                    --}}
+                    <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">
+                        Tanggal Stok Dibuat/Diubah</th>
                     <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">Aksi
                     </th>
-                    <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">ID
-                    </th>
+                    <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400" style="display:none;">
+                        ID</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($stocks as $stock)
+                @foreach($stocks as $index => $stock)
                 <tr>
-                    <td class="text-black font-bold border px-4 py-2">{{ $stock->id }}</td>
+                    <th class="border px-4 py-2">{{ $index + 1 }}</th>
                     <td class="border px-4 py-2">{{ $stock->menu->nama_menu }}</td>
-                    <td class="border px-4 py-2">
-                        100
-                    </td>
                     <td class="border px-4 py-2 {{ $stock->jumlah_stok == 0 ? 'bg-red-500 text-white' : '' }}">
                         {{ $stock->jumlah_stok }}
                     </td>
                     <td class="border px-4 py-2">{{ $stock->jumlah_pesanan ?? 0 }}</td>
-                    {{-- <td class="border px-4 py-2">{{ $stock->created_at }}</td> --}}
+                    <td class="border px-4 py-2">{{ $stock->created_at }}</td>
                     <td class="border px-4 py-2">
                         <span class="inline-flex overflow-hidden rounded-md border bg-white shadow-sm">
                             <a href="{{ route('stocks.edit', $stock->id) }}"
@@ -100,7 +99,7 @@
                             </form>
                         </span>
                     </td>
-                    <td class="text-black font-bold border px-4 py-2">{{ $stock->id }}</td>
+                    <td class="text-black font-bold border px-4 py-2" style="display:none;">{{ $stock->id }}</td>
                 </tr>
                 @endforeach
             </tbody>
@@ -111,18 +110,15 @@
                     <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">Nama
                         Menu</th>
                     <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">Stok
-                        Awal</th>
-                    <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">Stok
                         Tersedia</th>
                     <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">Stok
                         Terjual</th>
-                    {{-- <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">
-                        Created At</th>
-                    --}}
+                    <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">
+                        Tanggal Stok Dibuat/Diubah</th>
                     <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">Aksi
                     </th>
-                    <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">ID
-                    </th>
+                    <th class="text-black dark:text-white px-4 py-2 bg-white dark:bg-orange-400" style="display:none;">
+                        ID</th>
                 </tr>
             </tfoot>
         </table>

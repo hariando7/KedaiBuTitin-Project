@@ -11,6 +11,7 @@ class Order extends Model
     protected $fillable = [
         'menu_id',
         'jumlah_pesanan',
+        'harga_pesanan',
         'catatan_pesanan'
     ];
 
@@ -19,8 +20,4 @@ class Order extends Model
         return $this->belongsTo(Menu::class);
     }
 
-    public function getTotalHargaAttribute()
-    {
-        return $this->menu->harga_menu * $this->jumlah_pesanan;
-    }
 }

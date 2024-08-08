@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('menu_id');
             $table->integer('jumlah_pesanan');
-            $table->text('catatan_pesanan')->nullable(); // Tambahkan ini
+            $table->integer('harga_pesanan');
+            $table->text('catatan_pesanan')->nullable(); 
             $table->timestamps();
             $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
         });

@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="bg-white">
-    <h1 class="text-4xl mb-5 text-black dark:text-orange-900">Tambah Stok</h1>
     <nav aria-label="Breadcrumb" class="flex mb-5">
         <ol class="flex overflow-hidden rounded-lg border border-gray-200 text-gray-600">
             <li class="flex items-center">
@@ -25,19 +24,9 @@
                     Tambah Stok
                 </a>
             </li>
-            <li class=" relative flex items-center">
-                <span
-                    class="absolute inset-y-0 -start-px h-10 w-4 bg-gray-100 [clip-path:_polygon(0_0,_0%_100%,_100%_50%)] rtl:rotate-180">
-                </span>
-                <form action="{{ route('stocks.reset') }}" method="POST" class="inline-block">
-                    @csrf
-                    <button type="submit"
-                        class="flex h-10 items-center bg-red-500 dark:bg-red-500 dark:text-white dark:hover:text-white pe-4 ps-8 text-xs font-medium transition hover:text-white text-white">
-                        Reset Stok</button>
-                </form>
-            </li>
         </ol>
     </nav>
+    <h1 class="text-4xl mb-5 text-black dark:text-orange-900">Tambah Stok</h1>
     @if(session('error'))
     <div class="bg-red-500 text-white p-4 mb-4 rounded">
         {{ session('error') }}
@@ -47,7 +36,7 @@
         @csrf
         <div class="mb-4">
             <label for="menu_id" class="block text-sm font-medium text-gray-900">Menu</label>
-            <select name="menu_id" id="menu_id" class="w-full rounded-lg border-gray-300 px-4 py-2 border rounded">
+            <select name="menu_id" id="menu_id" class="w-full rounded-lg border-gray-300 px-4 py-2 border">
                 @foreach($menus as $menu)
                 <option value="{{ $menu->id }}">{{ $menu->nama_menu }}</option>
                 @endforeach
@@ -63,14 +52,26 @@
                 </div>
             </div>
         </div>
-        <button type="submit"
-            class="group relative inline-block text-sm font-medium text-white focus:outline-none focus:ring" href="#">
-            <span class="absolute inset-0 border border-orange-600 group-active:border-orange-500"></span>
-            <span
-                class="block border border-orange-600 bg-orange-600 px-12 py-3 transition-transform active:border-orange-500 active:bg-orange-500 group-hover:-translate-x-1 group-hover:-translate-y-1">
-                Tambah Stok
-            </span>
-        </button>
+        <div class="flex justify-between mt-10">
+            <a href="{{ route('stocks.index') }}"
+                class="group relative inline-block text-sm font-medium text-white focus:outline-none focus:ring"
+                href="#">
+                <span class="absolute inset-0 border border-orange-600 group-active:border-orange-500"></span>
+                <span
+                    class="block border border-orange-600 bg-orange-600 px-12 py-3 transition-transform active:border-orange-500 active:bg-orange-500 group-hover:-translate-x-1 group-hover:-translate-y-1">
+                    Kembali
+                </span>
+            </a>
+            <button type="submit"
+                class="group relative inline-block text-sm font-medium text-white focus:outline-none focus:ring"
+                href="#">
+                <span class="absolute inset-0 border border-orange-600 group-active:border-orange-500"></span>
+                <span
+                    class="block border border-orange-600 bg-orange-600 px-12 py-3 transition-transform active:border-orange-500 active:bg-orange-500 group-hover:-translate-x-1 group-hover:-translate-y-1">
+                    Tambah Stok
+                </span>
+            </button>
+        </div>
     </form>
 </div>
 @endsection
