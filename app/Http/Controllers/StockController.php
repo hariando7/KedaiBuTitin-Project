@@ -11,16 +11,10 @@ class StockController extends Controller
 {
     public function index()
     {
-        // Mengambil semua stok dengan menu terkait
-        $stocks = Stock::with('menu')->get();
+    // Mengambil semua stok dengan menu terkait
+    $stocks = Stock::with('menu')->get();
 
-        // Menghitung jumlah pesanan untuk setiap stok
-        $stocks->map(function ($stock) {
-            $stock->jumlah_pesanan = Order::where('menu_id', $stock->menu_id)->sum('jumlah_pesanan');
-            return $stock;
-        });
-
-        return view('stocks.index', compact('stocks'));
+    return view('stocks.index', compact('stocks'));
     }
 
     public function create()

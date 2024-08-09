@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('menu_id');
-            $table->integer('jumlah_pesanan');
+            $table->integer('jumlah_pesanan')->default(0);
             $table->integer('harga_pesanan');
             $table->text('catatan_pesanan')->nullable(); 
             $table->timestamps();

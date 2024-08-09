@@ -54,8 +54,9 @@
                         Menu</th>
                     <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">Stok
                         Tersedia</th>
-                    <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">Stok
-                        Terjual</th>
+                    {{-- <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">
+                        Stok
+                        Terjual</th> --}}
                     <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">
                         Tanggal Stok Dibuat/Diubah</th>
                     <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">Aksi
@@ -72,7 +73,7 @@
                     <td class="border px-4 py-2 {{ $stock->jumlah_stok == 0 ? 'bg-red-500 text-white' : '' }}">
                         {{ $stock->jumlah_stok }}
                     </td>
-                    <td class="border px-4 py-2">{{ $stock->jumlah_pesanan ?? 0 }}</td>
+                    {{-- <td class="border px-4 py-2">{{ $stock->jumlah_pesanan ?? 0 }}</td> --}}
                     <td class="border px-4 py-2">{{ $stock->created_at }}</td>
                     <td class="border px-4 py-2">
                         <span class="inline-flex overflow-hidden rounded-md border bg-white shadow-sm">
@@ -111,8 +112,9 @@
                         Menu</th>
                     <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">Stok
                         Tersedia</th>
-                    <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">Stok
-                        Terjual</th>
+                    {{-- <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">
+                        Stok
+                        Terjual</th> --}}
                     <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">
                         Tanggal Stok Dibuat/Diubah</th>
                     <th class="text-black dark:text-white font-bold border px-4 py-2 bg-white dark:bg-orange-400">Aksi
