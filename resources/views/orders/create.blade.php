@@ -33,12 +33,21 @@
             </ol>
         </nav>
         <div class="flex gap-5">
+            <a href="{{ route('orders.create') }}"
+                class="btn border-none bg-white text-xs font-medium transition hover:text-gray-900 {{ Request::routeIs(['orders.create']) ? 'bg-gray-100 dark:bg-orange-700 text-gray-600 dark:text-white dark:hover:text-white ' : '' }} text-gray-600 px-4 transition hover:text-gray-900">Menu
+                Home</a>
+            <a href="{{ route('menus.index') }}"
+                class="btn border-none bg-gray-100 text-xs font-medium transition hover:text-gray-900 {{ Request::routeIs(['menus.index']) ? 'bg-gray-100 dark:bg-orange-700 text-gray-600 dark:text-white dark:hover:text-white ' : '' }} text-gray-600 px-4 transition hover:text-gray-900">Kelola
+                Menu</a>
+            <a href="{{ route('stocks.index') }}"
+                class="btn border-none bg-gray-100 text-xs font-medium transition hover:text-gray-900 {{ Request::routeIs(['stocks.index']) ? 'bg-gray-100 dark:bg-orange-700 text-gray-600 dark:text-white dark:hover:text-white ' : '' }} text-gray-600 px-4 transition hover:text-gray-900">Kelola
+                Stok Menu</a>
             <a href="{{ route('orders.index') }}"
-                class="btn border-none dark:bg-orange-700 text-black dark:text-white">Kelola
+                class="btn border-none bg-gray-100 text-xs font-medium transition hover:text-gray-900 {{ Request::routeIs(['orders.index']) ? 'bg-gray-100 dark:bg-orange-700 text-gray-600 dark:text-white dark:hover:text-white ' : '' }} text-gray-600 px-4 transition hover:text-gray-900">Kelola
                 Pesanan</a>
             <a href="{{ route('orders.report') }}"
-                class="btn border-none dark:bg-orange-700 text-black dark:text-white">Laporan
-                Pesanan</a>
+                class="btn border-none bg-gray-100 text-xs font-medium transition hover:text-gray-900 {{ Request::routeIs(['orders.report']) ? 'bg-gray-100 dark:bg-orange-700 text-gray-600 dark:text-white dark:hover:text-white ' : '' }} text-gray-600 px-4 transition hover:text-gray-900">Rekap
+                Kedai Ibu Titin</a>
         </div>
     </div>
     <div class="flex gap-5">
