@@ -13,7 +13,10 @@
                         {{ session('status') }}
                     </div>
                     @endif
-                    {{ __('You are logged in!') }}
+                    {{ __('Kamu sudah login!') }}
+                    <a href="{{ route('prasmanan_orders.index') }}"
+                        class="btn border-none bg-gray-700 dark:bg-orange-700 text-white dark:text-white text-xs font-medium transition hover:text-gray-900">Klik
+                        disini untuk mulai!</a>
                 </div>
             </div>
         </div>

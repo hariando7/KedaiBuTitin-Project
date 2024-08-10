@@ -17,7 +17,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->route('menus.index')->with('success', 'Logged in successfully.');
+            return redirect()->route('prasmanan_orders.create')->with('success', 'Logged in successfully.');
         }
 
         return redirect()->back()->with('error', 'Invalid credentials.');

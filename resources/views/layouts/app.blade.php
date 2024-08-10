@@ -51,7 +51,7 @@
                         </svg>
                     </button>
                 </div>
-                <li>
+                {{-- <li>
                     <a href="{{ route('menus.index') }}"
                         class="flex items-center p-1 text-gray-900 rounded-lg dark:hover:bg-orange-900 group {{ Request::routeIs(['menus.index', 'menus.create', 'menus.edit']) ? 'bg-gray-100 dark:bg-orange-700' : '' }}">
                         <svg class="flex-shrink-0 w-7 h-7 text-gray-500 transition duration-75 dark:text-white group-hover:text-gray-900 dark:group-hover:text-white"
@@ -134,7 +134,7 @@
                         </svg>
                         <span class="flex-1 ms-3 whitespace-nowrap dark:text-white">Rekap Pesanan</span>
                     </a>
-                </li>
+                </li> --}}
             </ul>
             <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-white">
                 <li>
