@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PrasmananStock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PrasmananStockController extends Controller
 {
@@ -43,9 +44,13 @@ class PrasmananStockController extends Controller
             'tanggal_ditambahkan' => 'required|date',
         ]);
 
+        // Log debugging information
+        Log::info('Updating PrasmananStock:', ['id' => $prasmananStock->id, 'request' => $request->all()]);
+
         $prasmananStock->update($request->all());
         return redirect()->route('prasmanan_stocks.index');
     }
+    
 
     public function destroy(PrasmananStock $prasmananStock)
     {

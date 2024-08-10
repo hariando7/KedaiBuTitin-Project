@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/stocks/reset', [StockController::class, 'reset'])->name('stocks.reset');
     Route::resource('prasmanan_stocks', PrasmananStockController::class);
     Route::resource('prasmanan_orders', PrasmananOrderController::class);
+    Route::put('/prasmanan_stocks/{prasmananStock}', [PrasmananStockController::class, 'update'])->name('prasmanan_stocks.update');
     Route::put('prasmanan_orders/{prasmananOrder}', [PrasmananOrderController::class, 'update'])->name('prasmanan_orders.update');
     Route::get('/prasmanan_orders/{id}', [PrasmananOrderController::class, 'show'])->name('prasmanan_orders.show');
 });

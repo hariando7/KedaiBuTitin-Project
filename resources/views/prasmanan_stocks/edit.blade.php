@@ -39,8 +39,9 @@
     </div>
     @endif
 
-    <form action="{{ route('prasmanan_stocks.store') }}" method="POST">
+    <form action="{{ route('prasmanan_stocks.update', $prasmananStock->id) }}" method="POST">
         @csrf
+        @method('PUT')
 
         <div class="mb-4">
             <label for="nama_menu" class="block text-gray-700">Nama Menu</label>
