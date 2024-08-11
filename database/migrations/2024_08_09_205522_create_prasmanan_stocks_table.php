@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_menu');
             $table->integer('stok_menu');
-            $table->date('tanggal_ditambahkan');
+            $table->datetime('tanggal_ditambahkan');
             $table->timestamps();
         });
     }

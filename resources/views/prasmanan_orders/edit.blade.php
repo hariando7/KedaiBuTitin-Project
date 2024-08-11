@@ -45,70 +45,112 @@
         <div class="mb-4">
             <label for="tanggal_pesanan" class="block text-gray-700">Tanggal Pesanan</label>
             <input type="datetime-local" id="tanggal_pesanan" name="tanggal_pesanan"
-                value="{{ $prasmananOrder->tanggal_pesanan }}" disabled
+                value="{{ $prasmananOrder->tanggal_pesanan }}"
                 class="h-10 w-full border rounded-lg border-gray-300 bg-transparent p-2 sm:text-sm">
         </div>
 
         <div id="items">
             @foreach(json_decode($prasmananOrder->items) as $index => $item)
-            <div class="mb-4">
-                <label for="item_name" class="block text-gray-700">Nama Menu</label>
-                <select name="items[{{ $index }}][id]" required
-                    class="h-10 w-full border rounded-lg border-gray-300 bg-transparent p-2 sm:text-sm"
+            <div class="mb-4 bg-gray-50 p-4 rounded-lg shadow-inner">
+                <label for="item_name_{{ $index }}" class="block text-gray-700">Nama Menu</label>
+                <select id="item_name_{{ $index }}" name="items[{{ $index }}][id]" required
+                    class="h-12 w-full border rounded-lg border-gray-300 bg-transparent p-2 sm:text-sm"
                     onchange="updateItemDetails({{ $index }})">
                     @foreach($stocks as $stock)
-                    <option value="{{ $stock->id }}" {{ $stock->id == $item->id ? 'selected' : '' }}>{{
-                        $stock->nama_menu }}</option>
+                    <option value="{{ $stock->id }}" {{ $stock->id == $item->id ? 'selected' : '' }}
+                        data-nama-menu="{{ $stock->nama_menu }}" data-harga-menu="{{ $stock->harga_menu }}">
+                        {{ $stock->nama_menu }}
+                    </option>
                     @endforeach
                 </select>
-                <label for="quantity" class="block text-gray-700 mt-2">Jumlah Menu</label>
-                <input type="number" name="items[{{ $index }}][quantity]" value="{{ $item->quantity }}" required
-                    class="h-10 w-full border rounded-lg border-gray-300 bg-transparent p-2 sm:text-sm">
-                <label for="harga_menu" class="block text-gray-700 mt-2">Harga Menu</label>
-                <input type="text" name="items[{{ $index }}][harga_menu]" value="{{ $item->harga_menu }}" required
-                    class="h-10 w-full border rounded-lg border-gray-300 bg-transparent p-2 sm:text-sm">
-                <input type="hidden" name="items[{{ $index }}][nama_menu]" value="{{ $item->nama_menu }}">
+
+                <label for="quantity_{{ $index }}" class="block text-gray-700 mt-2">Jumlah Menu</label>
+                <div class="flex items-center">
+                    <button type="button" onclick="decrementQuantity({{ $index }})"
+                        class="h-10 w-10 border border-gray-300 bg-transparent text-gray-600 rounded-l-lg">-</button>
+                    <input type="number" name="items[{{ $index }}][quantity]" id="quantity_{{ $index }}"
+                        value="{{ $item->quantity }}" min="1" required
+                        class="h-10 w-full border-t border-b border-gray-300 bg-transparent p-2 text-center sm:text-sm">
+                    <button type="button" onclick="incrementQuantity({{ $index }})"
+                        class="h-10 w-10 border border-gray-300 bg-transparent text-gray-600 rounded-r-lg">+</button>
+                </div>
+
+                <label for="harga_menu_{{ $index }}" class="block text-gray-700 mt-2">Harga Menu</label>
+                <div class="relative">
+                    <input type="text" name="items[{{ $index }}][harga_menu]" id="harga_menu_{{ $index }}"
+                        class="w-full px-4 py-2 border rounded-lg border-gray-300 pl-12" placeholder="10.000" />
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">Rp.</span>
+                </div>
+                <input type="hidden" name="items[{{ $index }}][nama_menu]" id="nama_menu_{{ $index }}"
+                    value="{{ $item->nama_menu }}">
             </div>
             @endforeach
         </div>
 
-        <button type="button" onclick="addItem()" class="bg-blue-500 text-white px-4 py-2 rounded">Tambah Item</button>
-        <button type="submit" class="bg-orange-600 text-white px-4 py-2 rounded">Simpan</button>
+        <div class="m-auto justify-center flex gap-5">
+            <button type="button" onclick="addItem()"
+                class="btn border-none bg-gray-100 text-xs font-medium transition hover:text-gray-900 {{ Request::routeIs(['prasmanan_orders.edit']) ? 'bg-gray-700 dark:bg-orange-700 text-white dark:text-white dark:hover:text-white ' : '' }} text-gray-600 px-4 transition hover:text-gray-900">Tambah
+                Item</button>
+            <button type="submit"
+                class="btn border-none bg-gray-100 text-xs font-medium transition hover:text-gray-900 {{ Request::routeIs(['prasmanan_orders.edit']) ? 'bg-gray-700 dark:bg-orange-700 text-white dark:text-white dark:hover:text-white ' : '' }} text-gray-600 px-4 transition hover:text-gray-900">Simpan</button>
+        </div>
     </form>
 
     <script>
         let itemIndex = {{ count(json_decode($prasmananOrder->items)) }};
-
+    
         function addItem() {
             const container = document.getElementById('items');
             const newItem = document.createElement('div');
-            newItem.className = 'mb-4';
+            newItem.className = 'mb-4 bg-gray-50 p-4 rounded-lg shadow-inner';
             newItem.innerHTML = `
-                <label for="item_name" class="block text-gray-700">Nama Menu</label>
-                <select name="items[${itemIndex}][id]" required class="h-10 w-full border rounded-lg border-gray-300 bg-transparent p-2 sm:text-sm" onchange="updateItemDetails(${itemIndex})">
+                <label for="item_name_${itemIndex}" class="block text-gray-700">Nama Menu</label>
+                <select id="item_name_${itemIndex}" name="items[${itemIndex}][id]" required class="h-12 w-full border rounded-lg border-gray-300 bg-transparent p-2 sm:text-sm" onchange="updateItemDetails(${itemIndex})">
                     @foreach($stocks as $stock)
-                        <option value="{{ $stock->id }}">{{ $stock->nama_menu }}</option>
+                        <option value="{{ $stock->id }}" data-nama-menu="{{ $stock->nama_menu }}" data-harga-menu="{{ $stock->harga_menu }}">{{ $stock->nama_menu }}</option>
                     @endforeach
                 </select>
-
-                <label for="quantity" class="block text-gray-700 mt-2">Jumlah Menu</label>
-                <input type="number" name="items[${itemIndex}][quantity]" required class="h-10 w-full border rounded-lg border-gray-300 bg-transparent p-2 sm:text-sm">
-
-                <label for="harga_menu" class="block text-gray-700 mt-2">Harga Menu</label>
-                <input type="text" name="items[${itemIndex}][harga_menu]" required class="h-10 w-full border rounded-lg border-gray-300 bg-transparent p-2 sm:text-sm">
-                
-                <input type="hidden" name="items[${itemIndex}][nama_menu]" value="">
+    
+                <label for="quantity_${itemIndex}" class="block text-gray-700 mt-2">Jumlah Menu</label>
+                <div class="flex items-center">
+                    <button type="button" onclick="decrementQuantity(${itemIndex})" class="h-10 w-10 border border-gray-300 bg-transparent text-gray-600 rounded-l-lg">-</button>
+                    <input type="number" name="items[${itemIndex}][quantity]" id="quantity_${itemIndex}" value="1" min="1" required class="h-10 w-full border-t border-b border-gray-300 bg-transparent p-2 text-center sm:text-sm">
+                    <button type="button" onclick="incrementQuantity(${itemIndex})" class="h-10 w-10 border border-gray-300 bg-transparent text-gray-600 rounded-r-lg">+</button>
+                </div>
+    
+                <label for="harga_menu_${itemIndex}" class="block text-gray-700 mt-2">Harga Menu</label>
+                <div class="relative">
+                    <input type="text" name="items[${itemIndex}][harga_menu]" id="harga_menu_${itemIndex}" class="w-full px-4 py-2 border rounded-lg border-gray-300 pl-12" placeholder="10.000">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">Rp.</span>
+                </div>
+                <input type="hidden" name="items[${itemIndex}][nama_menu]" id="nama_menu_${itemIndex}" value="">
             `;
             container.appendChild(newItem);
             itemIndex++;
         }
-
+    
         function updateItemDetails(index) {
-            const selectElement = document.querySelector(`select[name="items[${index}][id]"]`);
+            const selectElement = document.getElementById(`item_name_${index}`);
             const selectedOption = selectElement.options[selectElement.selectedIndex];
-            document.querySelector(`input[name="items[${index}][nama_menu]"]`).value = selectedOption.textContent;
-            document.querySelector(`input[name="items[${index}][harga_menu]"]`).value = selectedOption.getAttribute('data-harga-menu');
+            const namaMenu = selectedOption.getAttribute('data-nama-menu');
+            const hargaMenu = selectedOption.getAttribute('data-harga-menu');
+            
+            document.getElementById(`nama_menu_${index}`).value = namaMenu;
+            document.getElementById(`harga_menu_${index}`).value = hargaMenu;
+        }
+    
+        function incrementQuantity(index) {
+            const quantityInput = document.getElementById('quantity_' + index);
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+        }
+    
+        function decrementQuantity(index) {
+            const quantityInput = document.getElementById('quantity_' + index);
+            if (parseInt(quantityInput.value) > 1) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
+            }
         }
     </script>
+
 </div>
 @endsection

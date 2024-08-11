@@ -2,6 +2,28 @@
 
 @section('content')
 <div class="bg-white">
+    <script>
+        window.onload = function() {
+            @if (session('success'))
+                Swal.fire({
+                    title: 'Berhasil!',
+                    text: '{{ session('success') }}',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            @elseif (session('error'))
+                Swal.fire({
+                    title: 'Gagal!',
+                    text: '{{ session('error') }}',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            @endif
+        };
+    </script>
+
     <div class="flex justify-between">
         <nav aria-label="Breadcrumb" class="flex">
             <ol class="mb-5 flex overflow-hidden rounded-lg border border-gray-200 text-gray-600">
@@ -33,12 +55,6 @@
 
     <h1 class="text-4xl mb-5 text-black dark:text-orange-900">Tambah Stok</h1>
 
-    @if(session('error'))
-    <div class="bg-red-500 text-white p-4 mb-4 rounded">
-        {{ session('error') }}
-    </div>
-    @endif
-
     <form action="{{ route('prasmanan_stocks.store') }}" method="POST">
         @csrf
 
@@ -55,10 +71,23 @@
         </div>
 
         <div class="mb-4">
-            <label for="tanggal_ditambahkan" class="block text-gray-700">Tanggal Ditambahkan</label>
-            <input type="date" id="tanggal_ditambahkan" name="tanggal_ditambahkan" required
+            <label for="tanggal_ditambahkan" class="block text-gray-700">Tanggal Pesanan</label>
+            <input type="datetime-local" id="tanggal_ditambahkan" name="tanggal_ditambahkan" required
                 class="h-10 w-full border rounded-lg border-gray-300 bg-transparent p-2 sm:text-sm">
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const inputTanggal = document.getElementById('tanggal_ditambahkan');
+                const sekarang = new Date();
+                const tahun = sekarang.getFullYear();
+                const bulan = String(sekarang.getMonth() + 1).padStart(2, '0');
+                const hari = String(sekarang.getDate()).padStart(2, '0');
+                const jam = String(sekarang.getHours()).padStart(2, '0');
+                const menit = String(sekarang.getMinutes()).padStart(2, '0');
+                const formatTanggal = `${tahun}-${bulan}-${hari}T${jam}:${menit}`;
+                inputTanggal.value = formatTanggal;
+            });
+        </script>
 
         <div class="flex justify-between mt-10">
             <button type="submit"

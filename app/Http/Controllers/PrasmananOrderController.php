@@ -26,11 +26,15 @@ class PrasmananOrderController extends Controller
                 $q->whereRaw('LOWER(items) LIKE ?', ['%' . $search . '%']);
             });
         }
-    
-        $orders = $query->paginate(30); // Menggunakan paginate dengan 30 item per halaman
-    
+        
+        // Urutkan berdasarkan waktu penambahan terbaru
+        $query->orderBy('created_at', 'desc');
+        
+        $orders = $query->paginate(30);
+        
         return view('prasmanan_orders.index', compact('orders'));
-    }    
+    }
+    
 
     public function create()
     {
@@ -47,12 +51,17 @@ class PrasmananOrderController extends Controller
     
         $items = $request->input('items');
         $totalHarga = 0;
+        $errors = [];
     
         foreach ($items as $item) {
             $stock = PrasmananStock::find($item['id']);
             if (!$stock || $stock->stok_menu < $item['quantity']) {
-                return redirect()->back()->withErrors(['Stock for menu ' . $item['nama_menu'] . ' is insufficient or not found']);
+                $errors[] = 'Stok menu ' . $item['nama_menu'] . ' Sudah Habis';
             }
+        }
+    
+        if (!empty($errors)) {
+            return redirect()->back()->withErrors($errors)->withInput();
         }
     
         foreach ($items as $item) {
@@ -70,9 +79,8 @@ class PrasmananOrderController extends Controller
             'tanggal_pesanan' => $request->input('tanggal_pesanan'),
         ]);
     
-        return redirect()->route('prasmanan_orders.index');
+        return redirect()->route('prasmanan_orders.index')->with('success', 'Berhasil Menambahkan Pesanan.');
     }
-    
 
     public function edit(PrasmananOrder $prasmananOrder)
     {
@@ -129,10 +137,14 @@ class PrasmananOrderController extends Controller
             $stock->stok_menu += $item->quantity;
             $stock->save();
         }
-
+    
         $prasmananOrder->delete();
-        return redirect()->route('prasmanan_orders.index');
-    }
+        
+        // Set flash message
+        session()->flash('success', 'Data berhasil dihapus.');
+    
+        return redirect()->route('prasmanan_orders.index')->with('success', 'Berhasil Menghapus Pesanan.');
+    }    
 
     public function report(Request $request)
     {

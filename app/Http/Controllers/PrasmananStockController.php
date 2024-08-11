@@ -26,8 +26,22 @@ class PrasmananStockController extends Controller
             'stok_menu' => 'required|integer|min:0',
             'tanggal_ditambahkan' => 'required|date',
         ]);
-
+    
+        // Check if the menu already exists
+        $existingStock = PrasmananStock::where('nama_menu', $request->nama_menu)->first();
+    
+        if ($existingStock) {
+            // Set flash message for duplicate entry
+            session()->flash('error', 'Data dengan nama menu tersebut sudah ada.');
+    
+            return redirect()->back()->withInput();
+        }
+    
         PrasmananStock::create($request->all());
+    
+        // Set flash message for successful addition
+        session()->flash('success', 'Data berhasil ditambahkan.');
+    
         return redirect()->route('prasmanan_stocks.index');
     }
 
@@ -55,6 +69,10 @@ class PrasmananStockController extends Controller
     public function destroy(PrasmananStock $prasmananStock)
     {
         $prasmananStock->delete();
+    
+        // Set flash message
+        session()->flash('success', 'Data berhasil dihapus.');
+    
         return redirect()->route('prasmanan_stocks.index');
-    }
+    }    
 }

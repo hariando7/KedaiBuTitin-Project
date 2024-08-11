@@ -57,9 +57,22 @@
 
         <div class="mb-4">
             <label for="tanggal_ditambahkan" class="block text-gray-700">Tanggal Ditambahkan</label>
-            <input type="date" id="tanggal_ditambahkan" name="tanggal_ditambahkan" required
+            <input type="datetime-local" id="tanggal_ditambahkan" name="tanggal_ditambahkan" required
                 value="{{ $prasmananStock->tanggal_ditambahkan }}"
                 class="h-10 w-full border rounded-lg border-gray-300 bg-transparent p-2 sm:text-sm">
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                        const inputTanggal = document.getElementById('tanggal_ditambahkan');
+                        const sekarang = new Date();
+                        const tahun = sekarang.getFullYear();
+                        const bulan = String(sekarang.getMonth() + 1).padStart(2, '0');
+                        const hari = String(sekarang.getDate()).padStart(2, '0');
+                        const jam = String(sekarang.getHours()).padStart(2, '0');
+                        const menit = String(sekarang.getMinutes()).padStart(2, '0');
+                        const formatTanggal = `${tahun}-${bulan}-${hari}T${jam}:${menit}`;
+                        inputTanggal.value = formatTanggal;
+                    });
+            </script>
         </div>
 
         <div class="flex justify-between mt-10">
