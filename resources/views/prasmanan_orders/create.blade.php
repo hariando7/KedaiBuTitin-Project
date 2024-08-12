@@ -98,22 +98,27 @@
             <div id="items">
                 <div class="mb-4 bg-gray-50 p-4 rounded-lg shadow-inner">
                     <label for="item_name_0" class="block text-gray-700">Nama Menu</label>
+                    @php
+                    $stocks = $stocks->sortBy('nama_menu');
+                    @endphp
                     <select id="item_name_0" name="items[0][id]" required
                         class="h-12 w-full border rounded-lg border-gray-300 bg-transparent p-2 sm:text-sm"
                         onchange="updateItemDetails(0)">
                         <option value="">Pilih Menu</option>
                         @foreach($stocks as $stock)
-                        <option value="{{ $stock->id }}" data-nama-menu="{{ $stock->nama_menu }}">{{ $stock->nama_menu
-                            }}</option>
+                        <option value="{{ $stock->id }}" data-nama-menu="{{ $stock->nama_menu }}">
+                            {{ $stock->nama_menu }}
+                        </option>
                         @endforeach
                     </select>
                     <script>
                         $(document).ready(function() {
-                        $('#item_name_0').select2({
-                            placeholder: "Pilih Menu",
-                            allowClear: true,
+                            $('#item_name_0').select2({
+                                placeholder: "Pilih Menu",
+                                allowClear: true,
+                            });
                         });
-                    });
+                    </script>
                     </script>
                     <label for="quantity_0" class="block text-gray-700 mt-2">Jumlah Menu</label>
                     <div class="flex items-center">
@@ -127,9 +132,15 @@
 
                     <label for="harga_menu_0" class="block text-gray-700 mt-2">Harga Menu</label>
                     <div class="relative">
-                        <input type="text" name="items[0][harga_menu]" id="harga_menu_0"
-                            class="w-full px-4 py-2 border rounded-lg border-gray-300 pl-12" placeholder="10.000" />
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">Rp.</span>
+                        <select name="items[0][harga_menu]" id="harga_menu_0"
+                            class="w-full px-4 py-2 border rounded-lg border-gray-300" required>
+                            @for ($i = 1000; $i <= 50000; $i +=1000) <option value="{{ $i }}">Rp. {{ number_format($i,
+                                0, ',', '.')
+                                }}</option>
+                                @endfor
+                        </select>
+                        {{-- <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">Rp.</span>
+                        --}}
                     </div>
                     <input type="hidden" name="items[0][nama_menu]" id="nama_menu_0" value="">
                 </div>
@@ -169,9 +180,13 @@
     
                 <label for="harga_menu_${itemIndex}" class="block text-gray-700 mt-2">Harga Menu</label>
                 <div class="relative">
-                        <input type="text" name="items[${itemIndex}][harga_menu]" id="harga_menu_${itemIndex}"
-                            class="w-full px-4 py-2 border rounded-lg border-gray-300 pl-12" placeholder="10.000" />
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">Rp.</span>
+                            <select name="items[${itemIndex}][harga_menu]" id="harga_menu_${itemIndex}"
+                            class="w-full px-4 py-2 border rounded-lg border-gray-300" required>
+                            @for ($i = 1000; $i <= 50000; $i +=1000) <option value="{{ $i }}">Rp. {{ number_format($i,
+                                0, ',', '.')
+                                }}</option>
+                                @endfor
+                        </select>
                 </div>
                 <input type="hidden" name="items[${itemIndex}][nama_menu]" id="nama_menu_${itemIndex}" value="">
             `;
@@ -180,6 +195,9 @@
             placeholder: "Pilih Menu",
             allowClear: true,
             });
+            @php
+                    $stocks = $stocks->sortBy('nama_menu');
+                    @endphp
             itemIndex++;
         }
     
@@ -190,14 +208,14 @@
             let hargaMenu;
     
             switch (namaMenu) {
-                case 'Prasmanan':
-                    hargaMenu = 12000;
+                case 'Gorengan':
+                    hargaMenu = 1000;
                     break;
-                case 'Ayam Geprek':
+                case 'Pangsit Kuah':
                     hargaMenu = 10000;
                     break;
-                case 'Mie Goreng':
-                    hargaMenu = 13000;
+                case 'Jus':
+                    hargaMenu = 5000;
                     break;
                 default:
                     hargaMenu = 0;

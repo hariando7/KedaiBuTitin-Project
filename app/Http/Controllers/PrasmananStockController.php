@@ -10,7 +10,7 @@ class PrasmananStockController extends Controller
 {
     public function index()
     {
-        $stocks = PrasmananStock::all();
+        $stocks = PrasmananStock::orderBy('nama_menu', 'asc')->get();
         return view('prasmanan_stocks.index', compact('stocks'));
     }
 
